@@ -55,9 +55,8 @@ exports.login = (req, res, next) => {
     .then(user => {
         loadedUser = user.rows[0];
 
-        if (!loadedUser) {
-            return res.status(401).send('Account with this username does not exist.');
-        }
+        if (!loadedUser)
+            return res.status(401).json({ message: 'Invalid login.' });
 
         return bcrypt.compare(password, loadedUser.password);
     })
@@ -74,9 +73,7 @@ exports.login = (req, res, next) => {
         // Setting path to '/' so HTTP Cookie is retrievable across website
         res.setHeader('Set-Cookie', `token=${token}; HttpOnly; ${ SECURE == 'true' ? 'Secure;' : '' } expires=${+new Date(new Date().getTime()+86409000).toUTCString()}; path=/`);
         res.status(200).json({
-            loggedIn: true,
-            username: loadedUser.username,
-            roleName: loadedUser.role_name
+            message: 'Logged in succesfully'
         });
         res.send();
     })
@@ -120,10 +117,8 @@ exports.register = async (req, res, next) => {
         // Setting path to '/' so HTTP Cookie is retrievable across website
         res.setHeader('Set-Cookie', `token=${token}; HttpOnly; ${ SECURE == 'true' ? 'Secure;' : '' } expires=${+new Date(new Date().getTime()+86409000).toUTCString()}; path=/`);
         res.status(200).json({
-            message: 'Created user successfully.',
-            loggedIn: true,
+            message: 'Created reviewer successfully.',
             username: body.username,
-            roleName: 'Customer'
         })
     })
     .catch(() => {

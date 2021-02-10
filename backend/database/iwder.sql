@@ -26,6 +26,13 @@ CREATE TABLE review (
     CONSTRAINT assignment_fk FOREIGN KEY (assignment_id) REFERENCES assignment (id)
 );
 
+INSERT INTO assignment (name, open) VALUES ('Opdracht 1 Simpele pagina', false);
+INSERT INTO assignment (name, open) VALUES ('Opdracht 1 Simpele pagina', false);
+INSERT INTO assignment (name, open) VALUES ('Opdracht 1 Simpele pagina', false);
+INSERT INTO assignment (name, open) VALUES ('Opdracht 1 Simpele pagina', false);
+INSERT INTO assignment (name, open) VALUES ('Opdracht 1 Simpele pagina', false);
+INSERT INTO assignment (name, open) VALUES ('Opdracht 1 Simpele pagina', false);
+
 INSERT INTO student (st_number) VALUES ('s1128281');
 INSERT INTO student (st_number) VALUES ('s1127366');
 INSERT INTO student (st_number) VALUES ('s1128834');
