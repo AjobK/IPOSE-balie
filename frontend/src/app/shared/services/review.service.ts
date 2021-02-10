@@ -11,7 +11,6 @@ import { first } from 'rxjs/operators';
 @Injectable()
 export class ReviewService {
     private reviews: Review[] = [];
-
     reviewsChanged = new Subject<Review[]>();
 
     constructor(
@@ -27,13 +26,14 @@ export class ReviewService {
         .get<any>(environment.API_URL + '/api/review', environment.DEFAULT_HTTP_OPTIONS)
         .subscribe(
             (res: HttpResponse<any>) => {
+                console.log(res.body)
                 this.reviews = [];
                 res.body.reviews.map((review) => {
                     this.reviews.push(new Review(
                         review.id,
-                        review.studentNumber,
-                        review.requestTime,
-                        review.assignmentId
+                        review.student_number,
+                        review.request_time,
+                        review.assignment_id
                     ))
                 })
 

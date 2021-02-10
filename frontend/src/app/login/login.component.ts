@@ -4,6 +4,9 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { AccountService } from '../shared/services/account.service';
+import { Account } from '../shared/models/account.model';
+import { ReviewService } from '../shared/services/review.service';
 
 @Component({
   selector: 'app-login',
@@ -14,11 +17,13 @@ export class LoginComponent implements OnInit {
     @ViewChild('authForm') form: NgForm;
     @Output() hasErrors: boolean = false
     isLoading = false;
+    accountService: AccountService;
     accountChangedSubscription: Subscription;
 
     constructor(
         private elementRef: ElementRef,
-        private router: Router
+        private router: Router,
+        private reviewService: ReviewService
     ) { }
 
     ngOnInit(): void {}
@@ -27,12 +32,14 @@ export class LoginComponent implements OnInit {
         this.accountService.login(form.value.username, form.value.password)
         .subscribe(
             (res: HttpResponse<any>) => {
-                const { username, roleName } = res.body;
+                const { username, id } = res.body;
                 
-                this.accountService.account = new Account(username || '', roleName || '', true);
+                this.accountService.account = new Account(id, username || '?');
                 this.accountService.accountChanged.next(this.accountService.account);
 
-                this.router.navigate(['replicas']);
+                this.reviewService.fetchReviews();
+
+                this.router.navigate(['/']);
             },
             () => {
                 this.hasErrors = true;

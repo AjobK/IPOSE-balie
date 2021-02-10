@@ -12,7 +12,9 @@ export class Review {
     ) {
         this.id = id;
         this.studentNumber = studentNumber;
-        this.requestTime = requestTime;
         this.assignmentId = assignmentId;
+
+        let date = new Date(requestTime);
+        this.requestTime = `Requested review at [${date.getHours()}:${date.getMinutes()}]`;
     }
 }
