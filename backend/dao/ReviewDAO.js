@@ -2,7 +2,13 @@ const db = require('../database/db');
 
 module.exports = class ReviewDAO {
     static getOpenReviews() {
-        return db.query('SELECT * FROM review WHERE reviewer_id IS NULL AND request_time >= CURRENT_DATE ORDER BY request_time;');
+        return db.query(`
+            SELECT r.id AS id, s.st_number AS student_number, r.request_time AS request_time, a.id AS assignment_id
+            FROM review r
+            LEFT JOIN student s ON r.student_id = s.id
+            LEFT JOIN assignment a ON r.assignment_id = a.id
+            WHERE reviewer_id IS NULL AND request_time >= CURRENT_DATE ORDER BY request_time;
+        `);
     }
     
     static getClosedReviews() {

@@ -4,9 +4,6 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { Account } from '../shared/models/account.model';
-import { AccountService } from '../shared/services/account.service';
-import { BasketService } from '../shared/services/basket.service';
 
 @Component({
   selector: 'app-login',
@@ -21,16 +18,10 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private elementRef: ElementRef,
-        private accountService: AccountService,
         private router: Router
     ) { }
 
-    ngOnInit(): void {
-        this.accountChangedSubscription = this.accountService.accountChanged.subscribe((account) => {
-            if (account.loggedIn) this.router.navigate(['replicas']);
-        })
-        this.elementRef.nativeElement.ownerDocument.body.classList.add('grey-body');
-    }
+    ngOnInit(): void {}
 
     onSubmit(form: NgForm) {
         this.accountService.login(form.value.username, form.value.password)

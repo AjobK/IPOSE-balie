@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Replica } from '../shared/models/replica.model';
-import { BasketService } from '../shared/services/basket.service';
-import { ReplicaService } from '../shared/services/replica.service';
+import { Review } from '../shared/models/review.model';
+import { ReviewService } from '../shared/services/review.service';
 
 @Component({
   selector: 'app-manage',
@@ -10,26 +9,25 @@ import { ReplicaService } from '../shared/services/replica.service';
   styleUrls: ['./manage.component.scss']
 })
 export class ManageComponent implements OnInit {
-  @Output() replicaList: Replica[] = [];
-  replicasChangedSubscription: Subscription;
+  @Output() reviewList: Review[] = [];
+  reviewsChangedSubscription: Subscription;
 
   constructor(
-    public basketService: BasketService,
-    public replicaService: ReplicaService,
+    public reviewService: ReviewService,
     private elementRef: ElementRef
   ) { }
 
   ngOnInit(): void {
-    this.replicaService.fetchReplicas();
-    this.replicaList = this.replicaService.getReplicas();
+    this.reviewService.fetchReviews();
+    this.reviewList = this.reviewService.getReviews();
 
-    this.replicasChangedSubscription = this.replicaService.replicasChanged.subscribe(() => this.replicaList = this.replicaService.getReplicas())
+    this.reviewsChangedSubscription = this.reviewService.reviewsChanged.subscribe(() => this.reviewList = this.reviewService.getReviews())
 
     this.elementRef.nativeElement.ownerDocument.body.classList.add('grey-body');
   }
 
   ngOnDestroy(): void {
     this.elementRef.nativeElement.ownerDocument.body.classList.remove('grey-body');
-    this.replicasChangedSubscription.unsubscribe();
+    this.reviewsChangedSubscription.unsubscribe();
   }
 }
