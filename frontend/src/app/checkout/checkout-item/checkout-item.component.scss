@@ -86,20 +86,22 @@ article.order-item {
                 }
 
                 > button {
-                    background-color: darken(adjust-hue($color: $secondary-tone, $degrees: 170), 20%);
+                    background-color: darken($secondary-tone, 20%);
 
                     &:hover {
-                        background-color: darken(adjust-hue($color: $secondary-tone, $degrees: 170), 20%);
+                        background-color: darken($secondary-tone, 30%);
                     }
                 }
 
                 > button, > a {
-                    padding: 15px;
+                    padding: 22px;
                     
                     > img {
                         display: block;
-                        width: 15px;
-                        height: 15px;
+                        width: auto;
+                        height: 18px;
+                        margin-bottom: 1px;
+                        margin-right: 1px;
                     }
                 }
             }

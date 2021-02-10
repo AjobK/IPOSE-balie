@@ -17,25 +17,33 @@ export class LoginComponent implements OnInit {
     @ViewChild('authForm') form: NgForm;
     @Output() hasErrors: boolean = false
     isLoading = false;
-    accountService: AccountService;
     accountChangedSubscription: Subscription;
 
     constructor(
         private elementRef: ElementRef,
         private router: Router,
-        private reviewService: ReviewService
+        private reviewService: ReviewService,
+        private accountService: AccountService
     ) { }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.elementRef.nativeElement.ownerDocument.body.classList.add('grey-body');
+    }
 
     onSubmit(form: NgForm) {
-        this.accountService.login(form.value.username, form.value.password)
+        this.accountChangedSubscription = this.accountService.login(form.value.username, form.value.password)
         .subscribe(
             (res: HttpResponse<any>) => {
                 const { username, id } = res.body;
                 
-                this.accountService.account = new Account(id, username || '?');
+                console.log('BODY')
+                console.log(res.body)
+
+                this.accountService.account = new Account(id, username);
                 this.accountService.accountChanged.next(this.accountService.account);
+
+                console.log('ACCOUNT')
+                console.log(this.accountService.account);
 
                 this.reviewService.fetchReviews();
 
@@ -52,6 +60,5 @@ export class LoginComponent implements OnInit {
 
     ngOnDestroy(): void {
         this.elementRef.nativeElement.ownerDocument.body.classList.remove('grey-body');
-        this.accountChangedSubscription.unsubscribe();
     }
 }

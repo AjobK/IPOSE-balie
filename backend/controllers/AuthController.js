@@ -37,9 +37,8 @@ exports.getLoggedIn = (req, res, next) => {
             // Initial check whether user is logged in (On front-end app load)
             // Based on valid decodable token
             res.status(200).json({
-                loggedIn: loggedIn,
-                username: user.rows[0].username,
-                roleName: user.rows[0].role_name
+                id: user.rows[0].id,
+                username: user.rows[0].username
             });
         }
     })
@@ -73,7 +72,9 @@ exports.login = (req, res, next) => {
         // Setting path to '/' so HTTP Cookie is retrievable across website
         res.setHeader('Set-Cookie', `token=${token}; HttpOnly; ${ SECURE == 'true' ? 'Secure;' : '' } expires=${+new Date(new Date().getTime()+86409000).toUTCString()}; path=/`);
         res.status(200).json({
-            message: 'Logged in succesfully'
+            message: 'Logged in succesfully',
+            id: loadedUser.id,
+            username: loadedUser.username,
         });
         res.send();
     })

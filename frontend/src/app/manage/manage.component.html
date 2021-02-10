@@ -1,8 +1,11 @@
 <app-navigation></app-navigation>
 <section>
+    <div class="student-input">
+        <input type="text" placeholder="s1120364" />
+        <button>Request review</button>
+    </div>
     <article *ngIf="reviewList.length <= 0" class="order-item no-items">
         No reviews yet...
     </article>
     <app-checkout-item *ngFor="let reviewItem of reviewList" [review]="reviewItem"></app-checkout-item>
-    <a class="btn small" [routerLink]="['/manage/review/new']">NEW STUDENT</a>
 </section>
