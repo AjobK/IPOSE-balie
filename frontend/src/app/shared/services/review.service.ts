@@ -26,7 +26,6 @@ export class ReviewService {
         .get<any>(environment.API_URL + '/api/review', environment.DEFAULT_HTTP_OPTIONS)
         .subscribe(
             (res: HttpResponse<any>) => {
-                console.log(res.body)
                 this.reviews = [];
                 res.body.reviews.map((review) => {
                     this.reviews.push(new Review(
@@ -73,12 +72,8 @@ export class ReviewService {
     }
 
     createReview(reviewData: {
-        artist: string,
-        name: string,
-        origin: string,
-        cost: number,
-        year: number,
-        imageUrl: string
+        studentNumber: string,
+        assignmentId: number
     }) {
         return this.http
         .post<any>(environment.API_URL + `/api/review`, reviewData, environment.DEFAULT_HTTP_OPTIONS)
@@ -99,5 +94,10 @@ export class ReviewService {
                 }
             }
         )
+    }
+
+    setAssigned(index: number) {
+        return this.http
+        .patch<any>(environment.API_URL + `/api/review/${index}`, {}, environment.DEFAULT_HTTP_OPTIONS);
     }
 }

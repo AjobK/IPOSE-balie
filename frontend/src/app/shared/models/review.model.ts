@@ -15,6 +15,6 @@ export class Review {
         this.assignmentId = assignmentId;
 
         let date = new Date(requestTime);
-        this.requestTime = `Requested review at [${date.getHours()}:${date.getMinutes()}]`;
+        this.requestTime = `${date.getHours() <= 9 ? '0' : ''}${date.getHours()} : ${date.getMinutes() <= 9 ? '0' : ''}${date.getMinutes()}`;
     }
 }

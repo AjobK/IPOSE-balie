@@ -30,9 +30,7 @@ exports.getLoggedIn = (req, res, next) => {
     AuthDAO.getAccountByUsername(escape(decodedToken.username))
     .then(user => {
         if (!user.rows[0]) {
-            res.status(200).json({
-                loggedIn: false
-            })
+            res.status(200).json({ })
         } else {
             // Initial check whether user is logged in (On front-end app load)
             // Based on valid decodable token

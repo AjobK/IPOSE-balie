@@ -51,8 +51,6 @@ module.exports = class ReviewDAO {
         [studentNumber]
       )
       .then(async (students) => {
-        console.log(students.rows);
-
         for (let i = 0; i < students.rows.length; i++) {
           if (students.rows[i].reviewer_id == null)
             throw new Error("This student has already opened a review");

@@ -36,14 +36,8 @@ export class LoginComponent implements OnInit {
             (res: HttpResponse<any>) => {
                 const { username, id } = res.body;
                 
-                console.log('BODY')
-                console.log(res.body)
-
                 this.accountService.account = new Account(id, username);
                 this.accountService.accountChanged.next(this.accountService.account);
-
-                console.log('ACCOUNT')
-                console.log(this.accountService.account);
 
                 this.reviewService.fetchReviews();
 
@@ -60,5 +54,8 @@ export class LoginComponent implements OnInit {
 
     ngOnDestroy(): void {
         this.elementRef.nativeElement.ownerDocument.body.classList.remove('grey-body');
+
+        if (this.accountChangedSubscription)
+            this.accountChangedSubscription.unsubscribe();
     }
 }

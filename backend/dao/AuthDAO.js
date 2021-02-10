@@ -3,7 +3,7 @@ const escape = require('validator/lib/escape')
 
 module.exports = class AuthDAO {
     static getAccountByUsername(username) {
-        return db.query(`SELECT username FROM reviewer WHERE username=$1;`, [username]);
+        return db.query(`SELECT id, username FROM reviewer WHERE username=$1;`, [username]);
     }
 
     static getFullAccountByUsername(username) {
