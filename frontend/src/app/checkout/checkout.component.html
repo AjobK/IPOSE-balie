@@ -1,0 +1,13 @@
+<app-navigation></app-navigation>
+<section>
+    <article *ngIf="replicaList.length <= 0" class="order-item no-items">
+        No items added to shopping basket...
+    </article>
+    <app-checkout-item *ngFor="let replicaItem of replicaList" [replicaItem]="replicaItem"></app-checkout-item>
+    <!-- <h2 *ngIf="replicaList.length > 0">Total cost: </h2> -->
+    <h2 class="total-cost" *ngIf="replicaList.length > 0">TOTAL COST <span>{{ basketService.getBasket().getTotalCost() }} EU</span></h2>
+    <div class="button-holder">
+        <a routerLink="/replicas">GO BACK</a>
+        <button class="btn small" *ngIf="replicaList.length > 0" (click)="basketService.sendOrder()">ORDER</button>
+    </div>
+</section>
