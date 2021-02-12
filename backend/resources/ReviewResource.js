@@ -18,5 +18,7 @@ router.patch("/:reviewId", isAuth, reviewController.setReviewer);
 // GET /review/:id
 router.get("/:reviewId", isAuth, reviewController.getReviewById);
 
+// GET /review/taken/:reviewerId
+router.get("/taken/:reviewerId", isAuth, reviewController.getTakenReviews);
 
 module.exports = router;

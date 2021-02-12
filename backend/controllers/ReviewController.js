@@ -34,6 +34,21 @@ exports.getReplicaById = (req, res, next) => {
     });
 };
 
+exports.getTakenReviews = (req, res, next) => {
+  ReviewDAO.getTakenReviews(req.params.reviewerId)
+    .then((reviews) => {
+      res.status(200).json({
+        message: "Taken reviews loaded",
+        reviews: reviews.rows,
+      });
+    })
+    .catch(() => {
+      res.status(404).json({
+        message: "No reviews taken",
+      });
+    });
+};
+
 exports.createReview = (req, res, next) => {
   let { studentNumber, assignmentId } = req.body;
 
@@ -123,49 +138,49 @@ exports.getReviewById = (req, res, next) => {
 };
 
 exports.setReviewer = async (req, res, next) => {
-    if (!req.decoded)
-        return res.status(401).json({
-            message: "No authorization data",
-        });
+  if (!req.decoded)
+    return res.status(401).json({
+      message: "No authorization data",
+    });
 
-    const reviewId = req.params.reviewId * 1;
-    const reviewerId = req.decoded.id;
+  const reviewId = req.params.reviewId * 1;
+  const reviewerId = req.decoded.id;
 
-    let hasReviewer = true;
+  let hasReviewer = true;
 
-    await ReviewDAO.getReviewById(reviewId)
+  await ReviewDAO.getReviewById(reviewId)
     .then((data) => {
-        if (data.rows[0].reviewer_id == null) hasReviewer = false;
+      if (data.rows[0].reviewer_id == null) hasReviewer = false;
     })
-    .catch(() => { });
+    .catch(() => {});
 
-    if (hasReviewer)
-        return res.status(409).json({
-            ninja: req.decoded.username,
-        });
+  if (hasReviewer)
+    return res.status(409).json({
+      ninja: req.decoded.username,
+    });
 
-    if (!reviewerId || !reviewId)
-        return res.status(422).json({
-            message: "No reviewer or review ID passed",
-        });
+  if (!reviewerId || !reviewId)
+    return res.status(422).json({
+      message: "No reviewer or review ID passed",
+    });
 
-    if (
-        (typeof reviewerId != "number" && reviewerId != NaN) ||
-        (typeof reviewId != "number" && reviewerId != NaN)
-    )
-        return res.status(422).json({
-            message: "Invalid reviewer or review ID passed",
-        });
+  if (
+    (typeof reviewerId != "number" && reviewerId != NaN) ||
+    (typeof reviewId != "number" && reviewerId != NaN)
+  )
+    return res.status(422).json({
+      message: "Invalid reviewer or review ID passed",
+    });
 
-    ReviewDAO.setReviewer(reviewId, reviewerId)
+  ReviewDAO.setReviewer(reviewId, reviewerId)
     .then(() => {
-        return res.status(200).json({
-            message: "Reviewer set",
-        });
+      return res.status(200).json({
+        message: "Reviewer set",
+      });
     })
     .catch(() => {
-        return res.status(422).json({
-            message: "Could not set reviewer",
-        });
+      return res.status(422).json({
+        message: "Could not set reviewer",
+      });
     });
 };

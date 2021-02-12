@@ -25,6 +25,13 @@ module.exports = class ReviewDAO {
     return db.query("SELECT * FROM review WHERE id = $1;", [id]);
   }
 
+  static getTakenReviews(id) {
+    return db.query(
+      "SELECT * FROM review WHERE reviewer_id = $1 AND taken = true AND request_time >= CURRENT_DATE",
+      [id]
+    );
+  }
+
   static async createReview(body) {
     const { studentNumber, assignmentId } = body;
 
