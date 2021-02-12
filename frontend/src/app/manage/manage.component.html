@@ -1,5 +1,8 @@
 <app-navigation></app-navigation>
 <section>
+    <select class="selector" ngModel (ngModelChange)="setAssignment($event)">
+        <option *ngFor="let assignment of assignmentService.assignments; let i = index" [ngValue]="assignment">{{ assignment.name }}</option>
+    </select>
     <form class="student-input" #reviewForm="ngForm" (ngSubmit)="onSubmit(reviewForm)" *ngIf="accountService.account.id == -1">
         <input
             type="text"

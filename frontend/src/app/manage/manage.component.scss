@@ -107,3 +107,26 @@ article.order-item {
         }
     }
 }
+
+.selector {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 20px;
+    max-width: $desktop-large;
+    border: 0px solid transparent;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.1);
+    -webkit-appearance: none;
+    font-size: 12pt;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border-radius: 3px;
+
+    background-image: url('../../assets/icons/arrow.svg');
+    background-repeat: no-repeat;
+    background-position:
+        calc(100% - 20px),
+        calc(100% - 20px),
+        100% 0;
+    background-size: 20px;
+}

@@ -7,6 +7,7 @@ import {
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { first } from 'rxjs/operators';
+import { AssignmentService } from './assignment.service';
 
 @Injectable()
 export class ReviewService {
@@ -15,13 +16,13 @@ export class ReviewService {
 
     constructor(
         private http: HttpClient,
+        private assignmentService: AssignmentService
     ) {
+        this.reviewsChanged.next(this.reviews);
         this.fetchReviews();
     }
 
     fetchReviews() {
-        this.reviewsChanged.next(this.reviews);
-
         this.http
         .get<any>(environment.API_URL + '/api/review', environment.DEFAULT_HTTP_OPTIONS)
         .subscribe(
@@ -35,6 +36,10 @@ export class ReviewService {
                         review.assignment_id
                     ))
                 })
+
+                this.reviews.filter((i) => {
+                    return i.assignmentId == (this.assignmentService.currentAssignment ? this.assignmentService.currentAssignment.id : i.assignmentId)
+                });
 
                 this.reviewsChanged.next(this.reviews);
             }

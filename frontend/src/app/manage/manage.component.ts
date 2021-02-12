@@ -1,8 +1,10 @@
     import { Component, ElementRef, OnInit, Output, ViewChild } from '@angular/core';
     import { NgForm } from '@angular/forms';
     import { Subscription } from 'rxjs';
+import { Assignment } from '../shared/models/assignment.model';
     import { Review } from '../shared/models/review.model';
     import { AccountService } from '../shared/services/account.service';
+import { AssignmentService } from '../shared/services/assignment.service';
     import { ReviewService } from '../shared/services/review.service';
 
 @Component({
@@ -19,6 +21,7 @@ export class ManageComponent implements OnInit {
     constructor(
         public reviewService: ReviewService,
         public accountService: AccountService,
+        public assignmentService: AssignmentService,
         private elementRef: ElementRef
     ) { }
 
@@ -50,5 +53,9 @@ export class ManageComponent implements OnInit {
                 this.reviewService.fetchReviews();
             }
         )
+    }
+
+    setAssignment(assignment: Assignment): void {
+        this.assignmentService.setAssignment(assignment);
     }
 }
