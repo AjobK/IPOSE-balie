@@ -57,8 +57,8 @@ module.exports = class ReviewDAO {
         }
 
         return await db.query(
-          "INSERT INTO review (student_id, assignment_id, request_time) VALUES ($1, $2, $3);",
-          [studentId, assignmentId, newDate]
+          "INSERT INTO review (student_id, assignment_id, request_time, taken) VALUES ($1, $2, $3, $4);",
+          [studentId, assignmentId, newDate, false]
         );
       });
   }
