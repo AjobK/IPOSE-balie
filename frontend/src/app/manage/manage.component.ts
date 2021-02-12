@@ -17,6 +17,7 @@ export class ManageComponent implements OnInit {
     reviewsChangedSubscription: Subscription;
     @ViewChild('reviewForm') form: NgForm;
     reviewRequestSubscription: Subscription;
+    assignments: Assignment[] = [];
 
     constructor(
         public reviewService: ReviewService,
@@ -32,6 +33,11 @@ export class ManageComponent implements OnInit {
         this.reviewsChangedSubscription = this.reviewService.reviewsChanged.subscribe(() => this.reviewList = this.reviewService.getReviews())
 
         this.elementRef.nativeElement.ownerDocument.body.classList.add('grey-body');
+
+        this.assignments = this.assignmentService.assignments;
+        this.assignmentService.assignmentsChanged.subscribe((assignments: Assignment[]) => {
+            this.assignments = assignments;
+        })
     }
 
     ngOnDestroy(): void {
@@ -43,7 +49,7 @@ export class ManageComponent implements OnInit {
     onSubmit(form: NgForm) {
         this.reviewRequestSubscription = this.reviewService.createReview({
             studentNumber: form.value.studentNumber,
-            assignmentId: 1
+            assignmentId: this.assignmentService.currentAssignment.id
         })
         .subscribe(
             () => {

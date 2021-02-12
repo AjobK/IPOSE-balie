@@ -20,6 +20,10 @@ export class ReviewService {
     ) {
         this.reviewsChanged.next(this.reviews);
         this.fetchReviews();
+
+        assignmentService.currentAssignmentChanged.subscribe(() => {
+            this.fetchReviews();
+        })
     }
 
     fetchReviews() {
@@ -37,7 +41,7 @@ export class ReviewService {
                     ))
                 })
 
-                this.reviews.filter((i) => {
+                this.reviews = this.reviews.filter((i) => {
                     return i.assignmentId == (this.assignmentService.currentAssignment ? this.assignmentService.currentAssignment.id : i.assignmentId)
                 });
 

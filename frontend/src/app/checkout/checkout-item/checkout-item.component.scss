@@ -140,13 +140,18 @@ article.order-item {
 
         > button, > a {
             padding: 22px;
-            
+
             > img {
                 display: block;
                 width: auto;
-                height: 18px;
+                padding: 2px;
                 margin-bottom: 1px;
                 margin-right: 1px;
+
+                &.thumb {
+                    height: auto;
+                    width: 20px !important;
+                }
             }
         }
     }
@@ -168,7 +173,7 @@ article.order-item {
             background-color: darken($secondary-tone, 20%);
         }
 
-        &:last-child {
+        &:not(:first-child) {
             margin-left: 5px;
         }
 
