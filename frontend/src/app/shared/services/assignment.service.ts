@@ -25,7 +25,7 @@ export class AssignmentService {
 
   openAssignment(id): void {
     this.http.patch<any>(
-      environment.API_URL + `/api/assignmetns/close/${id}`,
+      environment.API_URL + `/api/assignmetns/open/${id}`,
       environment.DEFAULT_HTTP_OPTIONS
     );
   }

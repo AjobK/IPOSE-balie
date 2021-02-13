@@ -28,7 +28,7 @@ module.exports = class ReviewDAO {
   static getTakenReviews(id) {
     console.log("Hello there");
     return db.query(
-      "SELECT * FROM review WHERE reviewer_id = $1 AND closed = false AND request_time >= CURRENT_DATE",
+      "SELECT * FROM review WHERE reviewer_id = $1 AND open = true AND request_time >= CURRENT_DATE",
       [id]
     );
   }
@@ -66,7 +66,7 @@ module.exports = class ReviewDAO {
 
         return await db.query(
           "INSERT INTO review (student_id, assignment_id, request_time, taken) VALUES ($1, $2, $3, $4);",
-          [studentId, assignmentId, newDate, false]
+          [studentId, assignmentId, newDate, true]
         );
       });
   }
