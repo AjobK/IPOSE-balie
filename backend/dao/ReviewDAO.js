@@ -27,7 +27,7 @@ module.exports = class ReviewDAO {
 
   static getTakenReviews(id) {
     return db.query(
-      "SELECT * FROM review WHERE reviewer_id = $1 AND taken = true AND request_time >= CURRENT_DATE",
+      "SELECT * FROM review WHERE reviewer_id = $1 AND closed = false AND request_time >= CURRENT_DATE",
       [id]
     );
   }
