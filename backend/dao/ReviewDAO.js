@@ -39,6 +39,15 @@ module.exports = class ReviewDAO {
   static async createReview(body) {
     const { studentNumber, assignmentId } = body;
 
+    await db
+      .query("SELECT * FROM assignment WHERE id=$1 AND open=true;", [
+        assignmentId,
+      ])
+      .then((assignment) => {
+        if (assignment.rows.length <= 0)
+          throw new Error("This assignment is not open");
+      });
+
     let studentId = -1;
 
     await db
