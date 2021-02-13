@@ -27,7 +27,12 @@ export class CheckoutItemComponent implements OnInit {
         private sanitizer: DomSanitizer
     ) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+        if (this.taken) {
+            console.log('TAKEN:')
+            console.log(this.review)
+        }
+    }
 
     ngOnDestroy(): void {
         if (this.reviewRequestSubscription)
