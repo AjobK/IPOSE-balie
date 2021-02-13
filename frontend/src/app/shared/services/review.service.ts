@@ -74,9 +74,9 @@ export class ReviewService {
     );
   }
 
-  getTakenReviews(reviewerId) {
+  getTakenReviews() {
     return this.http.get<any>(
-      environment.API_URL + `/api/review/taken/${reviewerId}`,
+      environment.API_URL + `/api/review/taken`,
       environment.DEFAULT_HTTP_OPTIONS
     );
   }

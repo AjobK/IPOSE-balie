@@ -35,7 +35,7 @@ exports.getReplicaById = (req, res, next) => {
 };
 
 exports.getTakenReviews = (req, res, next) => {
-  ReviewDAO.getTakenReviews(req.params.reviewerId)
+  ReviewDAO.getTakenReviews(req.decoded.id)
     .then((reviews) => {
       res.status(200).json({
         message: "Taken reviews loaded",
