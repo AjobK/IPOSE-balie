@@ -19,21 +19,12 @@ import { ReviewService } from '../shared/services/review.service';
   styleUrls: ['./manage.component.scss'],
 })
 export class ManageComponent implements OnInit {
-<<<<<<< HEAD
   @Output() reviewList: Review[] = [];
+  @Output() takenReviewsList: Review[] = [];
   reviewsChangedSubscription: Subscription;
   @ViewChild('reviewForm') form: NgForm;
   reviewRequestSubscription: Subscription;
   assignments: Assignment[] = [];
-  isOpen: boolean = false;
-=======
-    @Output() reviewList: Review[] = [];
-    @Output() takenReviewsList: Review[] = [];
-    reviewsChangedSubscription: Subscription;
-    @ViewChild('reviewForm') form: NgForm;
-    reviewRequestSubscription: Subscription;
-    assignments: Assignment[] = [];
->>>>>>> 55808166a2351374f240452865ef284b37eb9f22
 
   constructor(
     public reviewService: ReviewService,
@@ -47,8 +38,12 @@ export class ManageComponent implements OnInit {
     this.reviewService.fetchReviews();
     this.reviewList = this.reviewService.getReviews();
 
-        this.reviewsChangedSubscription = this.reviewService.reviewsChanged.subscribe(() => this.reviewList = this.reviewService.getReviews())
-        this.reviewsChangedSubscription = this.reviewService.takenReviewsChanged.subscribe(() => this.takenReviewsList = this.reviewService.getTakenReviews())
+    this.reviewsChangedSubscription = this.reviewService.reviewsChanged.subscribe(
+      () => (this.reviewList = this.reviewService.getReviews())
+    );
+    this.reviewsChangedSubscription = this.reviewService.takenReviewsChanged.subscribe(
+      () => (this.takenReviewsList = this.reviewService.getTakenReviews())
+    );
 
     this.elementRef.nativeElement.ownerDocument.body.classList.add('grey-body');
 
