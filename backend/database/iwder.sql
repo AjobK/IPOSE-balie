@@ -21,6 +21,7 @@ CREATE TABLE review (
     assignment_id integer NOT NULL,
     reviewer_id integer,
     request_time timestamp NOT NULL,
+    closed boolean NOT NULL,
     CONSTRAINT student_fk FOREIGN KEY (student_id) REFERENCES student (id),
     CONSTRAINT reviewer_fk FOREIGN KEY (reviewer_id) REFERENCES reviewer (id),
     CONSTRAINT assignment_fk FOREIGN KEY (assignment_id) REFERENCES assignment (id)
