@@ -402,3 +402,12 @@ INSERT INTO student (st_number) VALUES ('s1127643');
 INSERT INTO student (st_number) VALUES ('s1112895');
 INSERT INTO student (st_number) VALUES ('s1120598');
 INSERT INTO student (st_number) VALUES ('s1111766');
+
+INSERT INTO assignment (name, open) VALUES ('Week 1 een simpele webpagina', 'false');
+INSERT INTO assignment (name, open) VALUES ('Week 1 links en navigatie', 'false');
+INSERT INTO assignment (name, open) VALUES ('Week 2 lijsten, tabellen en formulieren', 'false');
+INSERT INTO assignment (name, open) VALUES ('Week 3 positionering en layout met CSS-Grid', 'false');
+INSERT INTO assignment (name, open) VALUES ('Week 3 positionering en layout met Flexbox', 'false');
+INSERT INTO assignment (name, open) VALUES ('Week 4 JavaScript en het DOM', 'false');
+INSERT INTO assignment (name, open) VALUES ('Week 5 en 6 hosting', 'false');
+INSERT INTO assignment (name, open) VALUES ('Week 5 interacties en animaties', 'false');
