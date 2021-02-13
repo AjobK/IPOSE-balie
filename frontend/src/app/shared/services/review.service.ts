@@ -24,6 +24,7 @@ export class ReviewService {
 
     assignmentService.currentAssignmentChanged.subscribe(() => {
       this.fetchReviews();
+      this.fetchTakenReviews();
     });
   }
 
