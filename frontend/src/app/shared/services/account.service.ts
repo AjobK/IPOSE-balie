@@ -23,6 +23,7 @@ export class AccountService {
 
             this.account = new Account(id || -1, username || '');
             this.accountChanged.next(this.account);
+            this.reviewService.fetchTakenReviews();
         });
 
         this.accountChanged.next(this.account);

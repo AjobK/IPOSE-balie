@@ -8,13 +8,13 @@
         <!-- <div class="cost" [ngClass]="{ admin: adminView }"> -->
     </div>
     <div class="cost admin" *ngIf="accountService.account.id != -1">
-        <button>
+        <button *ngIf="!taken">
             <img src="../../../assets/icons/take.svg" />
         </button>
-        <button>
+        <a [href]="sanitize(review.studentNumber)" *ngIf="taken">
             <img src="../../../assets/icons/call.svg" class="thumb" />
-        </button>
-        <button (click)="assign()">
+        </a>
+        <button (click)="assign()" *ngIf="taken">
             <img src="../../../assets/icons/thumb.svg" class="thumb" />
         </button>
     </div>

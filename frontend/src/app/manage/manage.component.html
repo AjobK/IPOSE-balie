@@ -18,27 +18,31 @@
       *ngIf="this.accountService.account.id >= 1"
       (click)="toggleAssignmentOpen()"
     >
-      {{
-        assignmentService.currentAssignment.open ? "Close" : "Open"
-      }}
+      {{ assignmentService.currentAssignment.open ? "Close" : "Open" }}
       assignment
     </button>
+    <form
+      class="student-input"
+      #reviewForm="ngForm"
+      (ngSubmit)="onSubmit(reviewForm)"
+      *ngIf="accountService.account.id == -1"
+    >
+      <input type="text" placeholder="s1120364" ngModel name="studentNumber" />
+      <button type="submit">Request review</button>
+    </form>
+    <article *ngIf="reviewList.length <= 0" class="order-item no-items">
+      No reviews yet...
+    </article>
+    <app-checkout-item
+      *ngFor="let takenReviewItem of takenReviewsList; let i = index"
+      [review]="takenReviewItem"
+      [index]="i + 1"
+    ></app-checkout-item>
+    <hr />
+    <app-checkout-item
+      *ngFor="let reviewItem of reviewList; let i = index"
+      [review]="reviewItem"
+      [index]="i + 1"
+    ></app-checkout-item>
   </section>
-  <form
-    class="student-input"
-    #reviewForm="ngForm"
-    (ngSubmit)="onSubmit(reviewForm)"
-    *ngIf="accountService.account.id == -1"
-  >
-    <input type="text" placeholder="s1120364" ngModel name="studentNumber" />
-    <button type="submit">Request review</button>
-  </form>
-  <article *ngIf="reviewList.length <= 0" class="order-item no-items">
-    No reviews yet...
-  </article>
-  <app-checkout-item
-    *ngFor="let reviewItem of reviewList; let i = index"
-    [review]="reviewItem"
-    [index]="i + 1"
-  ></app-checkout-item>
 </section>
