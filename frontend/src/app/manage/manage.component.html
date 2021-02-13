@@ -18,7 +18,10 @@
       *ngIf="this.accountService.account.id >= 1"
       (click)="toggleAssignmentOpen()"
     >
-      Close / Open Assignment
+      {{
+        assignmentService.currentAssignment.open ? "Close" : "Open"
+      }}
+      assignment
     </button>
   </section>
   <form

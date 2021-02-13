@@ -24,6 +24,7 @@ export class ManageComponent implements OnInit {
   @ViewChild('reviewForm') form: NgForm;
   reviewRequestSubscription: Subscription;
   assignments: Assignment[] = [];
+  isOpen: boolean = false;
 
   constructor(
     public reviewService: ReviewService,
@@ -33,6 +34,7 @@ export class ManageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('Initing over');
     this.reviewService.fetchReviews();
     this.reviewList = this.reviewService.getReviews();
 
@@ -82,10 +84,18 @@ export class ManageComponent implements OnInit {
 
   toggleAssignmentOpen() {
     const currentAssignment = this.assignmentService.currentAssignment;
-    console.log(currentAssignment.open);
-    currentAssignment.open
-      ? this.assignmentService.closeAssignment(currentAssignment)
-      : this.assignmentService.openAssignment(currentAssignment);
-    console.log(currentAssignment.open);
+    if (currentAssignment.open) {
+      this.assignmentService
+        .closeAssignment(currentAssignment.id)
+        .subscribe(() => {
+          this.assignmentService.fetchAssignments();
+        });
+    } else {
+      this.assignmentService
+        .openAssignment(currentAssignment.id)
+        .subscribe(() => {
+          this.assignmentService.fetchAssignments();
+        });
+    }
   }
 }

@@ -23,16 +23,16 @@ export class AssignmentService {
     this.currentAssignmentChanged.next(this.currentAssignment);
   }
 
-  openAssignment(id): void {
-    this.http.patch<any>(
-      environment.API_URL + `/api/assignmetns/open/${id}`,
+  openAssignment(id) {
+    return this.http.patch<any>(
+      environment.API_URL + `/api/assignments/open/${id}`,
       environment.DEFAULT_HTTP_OPTIONS
     );
   }
 
-  closeAssignment(id): void {
-    this.http.patch<any>(
-      environment.API_URL + `/api/assignmetns/close/${id}`,
+  closeAssignment(id) {
+    return this.http.patch<any>(
+      environment.API_URL + `/api/assignments/close/${id}`,
       environment.DEFAULT_HTTP_OPTIONS
     );
   }
