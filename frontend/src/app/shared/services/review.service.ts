@@ -10,6 +10,8 @@ import { AssignmentService } from './assignment.service';
 export class ReviewService {
   private reviews: Review[] = [];
   reviewsChanged = new Subject<Review[]>();
+  private takenReviews: Review[] = [];
+  takenReviewsChanged = new Subject<Review[]>();
 
   constructor(
     private http: HttpClient,
@@ -17,6 +19,8 @@ export class ReviewService {
   ) {
     this.reviewsChanged.next(this.reviews);
     this.fetchReviews();
+    
+    this.takenReviewsChanged.next(this.takenReviews);
 
     assignmentService.currentAssignmentChanged.subscribe(() => {
       this.fetchReviews();
@@ -55,12 +59,48 @@ export class ReviewService {
       });
   }
 
+  fetchTakenReviews() {
+    return this.http.get<any>(
+      environment.API_URL + `/api/review/taken`,
+      environment.DEFAULT_HTTP_OPTIONS
+    )
+    .subscribe((res: HttpResponse<any>) => {
+      this.takenReviews = [];
+      res.body.reviews.map((review) => {
+        this.takenReviews.push(
+          new Review(
+            review.id,
+            review.student_number,
+            review.request_time,
+            review.assignment_id
+          )
+        );
+      });
+
+      this.takenReviews = this.takenReviews.filter((i) => {
+        return (
+          i.assignmentId ==
+          (this.assignmentService.currentAssignment
+            ? this.assignmentService.currentAssignment.id
+            : i.assignmentId)
+        );
+      });
+
+      this.takenReviewsChanged.next(this.takenReviews);
+    });
+  }
+
+
   setReviews(reviews: Review[]) {
     this.reviews = reviews;
   }
 
   getReviews() {
     return this.reviews.slice();
+  }
+
+  getTakenReviews() {
+    return this.takenReviews.slice();
   }
 
   getReview(index: number) {
@@ -70,13 +110,6 @@ export class ReviewService {
   getReviewById(id: number) {
     return this.http.get<any>(
       environment.API_URL + `/api/review/${id}`,
-      environment.DEFAULT_HTTP_OPTIONS
-    );
-  }
-
-  getTakenReviews() {
-    return this.http.get<any>(
-      environment.API_URL + `/api/review/taken`,
       environment.DEFAULT_HTTP_OPTIONS
     );
   }

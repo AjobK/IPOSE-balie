@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Review } from 'src/app/shared/models/review.model';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { ReviewService } from 'src/app/shared/services/review.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-checkout-item',
@@ -17,15 +18,24 @@ export class CheckoutItemComponent implements OnInit {
     @Input() adminView: boolean = false;
     @Input() customClasses: string;
     @Input() index: number;
+    @Input() taken: boolean = false;
     reviewRequestSubscription: Subscription;
 
-    constructor(public reviewService: ReviewService, public accountService: AccountService) { }
+    constructor(
+        public reviewService: ReviewService,
+        public accountService: AccountService,
+        private sanitizer: DomSanitizer
+    ) { }
 
     ngOnInit(): void { }
 
     ngOnDestroy(): void {
         if (this.reviewRequestSubscription)
             this.reviewRequestSubscription.unsubscribe();
+    }
+
+    sanitize(studentNumber: string){
+        return this.sanitizer.bypassSecurityTrustUrl('callto:' + studentNumber + '@student.hsleiden.nl');
     }
 
     assign(): void {

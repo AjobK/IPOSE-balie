@@ -19,11 +19,12 @@ import { ReviewService } from '../shared/services/review.service';
   styleUrls: ['./manage.component.scss'],
 })
 export class ManageComponent implements OnInit {
-  @Output() reviewList: Review[] = [];
-  reviewsChangedSubscription: Subscription;
-  @ViewChild('reviewForm') form: NgForm;
-  reviewRequestSubscription: Subscription;
-  assignments: Assignment[] = [];
+    @Output() reviewList: Review[] = [];
+    @Output() takenReviewsList: Review[] = [];
+    reviewsChangedSubscription: Subscription;
+    @ViewChild('reviewForm') form: NgForm;
+    reviewRequestSubscription: Subscription;
+    assignments: Assignment[] = [];
 
   constructor(
     public reviewService: ReviewService,
@@ -36,9 +37,8 @@ export class ManageComponent implements OnInit {
     this.reviewService.fetchReviews();
     this.reviewList = this.reviewService.getReviews();
 
-    this.reviewsChangedSubscription = this.reviewService.reviewsChanged.subscribe(
-      () => (this.reviewList = this.reviewService.getReviews())
-    );
+        this.reviewsChangedSubscription = this.reviewService.reviewsChanged.subscribe(() => this.reviewList = this.reviewService.getReviews())
+        this.reviewsChangedSubscription = this.reviewService.takenReviewsChanged.subscribe(() => this.takenReviewsList = this.reviewService.getTakenReviews())
 
     this.elementRef.nativeElement.ownerDocument.body.classList.add('grey-body');
 
