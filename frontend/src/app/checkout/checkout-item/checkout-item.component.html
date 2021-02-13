@@ -1,6 +1,6 @@
-<article class="order-item {{ customClasses }}">
+<article class="order-item {{ customClasses }}" [ngClass]="{ taken: taken }">
     <div class="replica-art-border">
-        <p class="replica-art">{{ index || '-1' }}</p>
+        <p class="replica-art">{{ taken ? 'R' : (index || '-1') }}</p>
     </div>
     <div class="order-info">
         <h2>{{ review.studentNumber }}</h2>

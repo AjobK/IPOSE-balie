@@ -122,15 +122,8 @@ article.order-item {
     }
 
     &.admin {
-        > a {
-            background-color: darken($background-color, 75%);
 
-            &:hover {
-                background-color: darken($background-color, 75%);
-            }
-        }
-
-        > button {
+        > button, > a {
             background-color: darken($secondary-tone, 20%);
 
             &:hover {
@@ -181,5 +174,38 @@ article.order-item {
             height: 12px;
             width: 12px;
         }
+    }
+}
+
+.taken {
+    border-left: $primary-tone solid 8px;
+
+    button, a {
+        background-color: $primary-tone !important;
+
+        &:hover {
+            background-color: darken($primary-tone, 10%) !important;
+        }
+    }
+
+    .order-info > p > span {
+        background-color: $primary-tone !important;
+    }
+
+    .replica-art-border {
+        background: $primary-tone !important;
+
+        > p {
+            color: $primary-tone;
+        }
+    }
+}
+
+:host.unfocused {
+    transition: 0.2s;
+    opacity: 0.5;
+
+    &:hover {
+        opacity: 1;
     }
 }

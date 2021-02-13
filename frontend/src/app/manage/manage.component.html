@@ -33,16 +33,7 @@
     <article *ngIf="reviewList.length <= 0" class="order-item no-items">
       No reviews yet...
     </article>
-    <app-checkout-item
-      *ngFor="let takenReviewItem of takenReviewsList; let i = index"
-      [review]="takenReviewItem"
-      [index]="i + 1"
-    ></app-checkout-item>
-    <hr />
-    <app-checkout-item
-      *ngFor="let reviewItem of reviewList; let i = index"
-      [review]="reviewItem"
-      [index]="i + 1"
-    ></app-checkout-item>
-  </section>
+    <app-checkout-item *ngFor="let takenReviewItem of takenReviewsList; let i = index" [review]="takenReviewItem" [index]="i+1" [taken]="true"></app-checkout-item>
+    <div class="reviewSeperator"></div>
+    <app-checkout-item *ngFor="let reviewItem of reviewList; let i = index" [review]="reviewItem" [index]="i+1" [ngClass]="{ unfocused: takenReviewsList && takenReviewsList.length > 0 }"></app-checkout-item>
 </section>
