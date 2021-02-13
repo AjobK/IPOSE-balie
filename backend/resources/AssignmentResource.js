@@ -8,9 +8,9 @@ const router = express.Router();
 router.get("/", assignmentController.getAssignments);
 
 // POST /assignments/open/:assignmentId
-router.get("/open/:assignmentId", assignmentController.openAssignment);
+router.patch("/open/:assignmentId", assignmentController.openAssignment);
 
 // Post /assignments/close/:assignmentId
-router.get("/close/:assignmentId", assignmentController.closeAssignment);
+router.patch("/close/:assignmentId", assignmentController.closeAssignment);
 
 module.exports = router;

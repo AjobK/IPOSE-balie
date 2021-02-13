@@ -19,12 +19,12 @@ import { ReviewService } from '../shared/services/review.service';
   styleUrls: ['./manage.component.scss'],
 })
 export class ManageComponent implements OnInit {
-    @Output() reviewList: Review[] = [];
-    @Output() takenReviewsList: Review[] = [];
-    reviewsChangedSubscription: Subscription;
-    @ViewChild('reviewForm') form: NgForm;
-    reviewRequestSubscription: Subscription;
-    assignments: Assignment[] = [];
+  @Output() reviewList: Review[] = [];
+  @Output() takenReviewsList: Review[] = [];
+  reviewsChangedSubscription: Subscription;
+  @ViewChild('reviewForm') form: NgForm;
+  reviewRequestSubscription: Subscription;
+  assignments: Assignment[] = [];
 
   constructor(
     public reviewService: ReviewService,
@@ -34,11 +34,16 @@ export class ManageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('Initing over');
     this.reviewService.fetchReviews();
     this.reviewList = this.reviewService.getReviews();
 
-        this.reviewsChangedSubscription = this.reviewService.reviewsChanged.subscribe(() => this.reviewList = this.reviewService.getReviews())
-        this.reviewsChangedSubscription = this.reviewService.takenReviewsChanged.subscribe(() => this.takenReviewsList = this.reviewService.getTakenReviews())
+    this.reviewsChangedSubscription = this.reviewService.reviewsChanged.subscribe(
+      () => (this.reviewList = this.reviewService.getReviews())
+    );
+    this.reviewsChangedSubscription = this.reviewService.takenReviewsChanged.subscribe(
+      () => (this.takenReviewsList = this.reviewService.getTakenReviews())
+    );
 
     this.elementRef.nativeElement.ownerDocument.body.classList.add('grey-body');
 
@@ -82,10 +87,18 @@ export class ManageComponent implements OnInit {
 
   toggleAssignmentOpen() {
     const currentAssignment = this.assignmentService.currentAssignment;
-    console.log(currentAssignment.open);
-    currentAssignment.open
-      ? this.assignmentService.closeAssignment(currentAssignment)
-      : this.assignmentService.openAssignment(currentAssignment);
-    console.log(currentAssignment.open);
+    if (currentAssignment.open) {
+      this.assignmentService
+        .closeAssignment(currentAssignment.id)
+        .subscribe(() => {
+          this.assignmentService.fetchAssignments();
+        });
+    } else {
+      this.assignmentService
+        .openAssignment(currentAssignment.id)
+        .subscribe(() => {
+          this.assignmentService.fetchAssignments();
+        });
+    }
   }
 }
