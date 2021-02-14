@@ -27,12 +27,7 @@ export class CheckoutItemComponent implements OnInit {
         private sanitizer: DomSanitizer
     ) { }
 
-    ngOnInit(): void {
-        if (this.taken) {
-            console.log('TAKEN:')
-            console.log(this.review)
-        }
-    }
+    ngOnInit(): void { }
 
     ngOnDestroy(): void {
         if (this.reviewRequestSubscription)
@@ -41,17 +36,5 @@ export class CheckoutItemComponent implements OnInit {
 
     sanitize(studentNumber: string){
         return this.sanitizer.bypassSecurityTrustUrl('callto:' + studentNumber + '@student.hsleiden.nl');
-    }
-
-    assign(): void {
-        this.reviewService.setAssigned(this.review.id)
-        .subscribe(
-            (res: HttpResponse<any>) => {
-                this.reviewService.fetchReviews()
-            },
-            (res: HttpResponse<any>) => {
-                this.reviewService.fetchReviews()
-            }
-        )
     }
 }

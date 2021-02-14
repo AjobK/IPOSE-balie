@@ -3,7 +3,7 @@ import { Review } from '../models/review.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 import { AssignmentService } from './assignment.service';
 
 @Injectable()
@@ -11,6 +11,8 @@ export class ReviewService {
   private reviews: Review[] = [];
   reviewsChanged = new Subject<Review[]>();
   private takenReviews: Review[] = [];
+  public updatedAt: Date = new Date();
+  public updatedAtChanged: Subject<Date> = new Subject<Date>();
   takenReviewsChanged = new Subject<Review[]>();
 
   constructor(
@@ -21,11 +23,6 @@ export class ReviewService {
     this.fetchReviews();
     
     this.takenReviewsChanged.next(this.takenReviews);
-
-    assignmentService.currentAssignmentChanged.subscribe(() => {
-      this.fetchReviews();
-      this.fetchTakenReviews();
-    });
   }
 
   fetchReviews() {
@@ -47,14 +44,8 @@ export class ReviewService {
           );
         });
 
-        this.reviews = this.reviews.filter((i) => {
-          return (
-            i.assignmentId ==
-            (this.assignmentService.currentAssignment
-              ? this.assignmentService.currentAssignment.id
-              : i.assignmentId)
-          );
-        });
+        this.updatedAt = new Date();
+        this.updatedAtChanged.next(this.updatedAt)
 
         this.reviewsChanged.next(this.reviews);
       });
@@ -78,14 +69,8 @@ export class ReviewService {
         );
       });
 
-      this.takenReviews = this.takenReviews.filter((i) => {
-        return (
-          i.assignmentId ==
-          (this.assignmentService.currentAssignment
-            ? this.assignmentService.currentAssignment.id
-            : i.assignmentId)
-        );
-      });
+      this.updatedAt = new Date();
+      this.updatedAtChanged.next(this.updatedAt)
 
       this.takenReviewsChanged.next(this.takenReviews);
     });
@@ -156,6 +141,9 @@ export class ReviewService {
             break;
           }
         }
+      },
+      (e) => {
+        alert(e.error.message);
       });
   }
 
@@ -164,6 +152,28 @@ export class ReviewService {
       environment.API_URL + `/api/review/${index}`,
       {},
       environment.DEFAULT_HTTP_OPTIONS
-    );
+    ).subscribe(
+      () => {
+        this.fetchReviews();
+        this.fetchTakenReviews();
+      },
+      (e) => {
+        alert(e.error.message);
+      }
+    )
+  }
+
+  closeReview(index: number) {
+    return this.http.patch<any>(
+      environment.API_URL + `/api/review/close/${index}`,
+      {},
+      environment.DEFAULT_HTTP_OPTIONS
+    ).subscribe(() => {
+      this.fetchReviews();
+      this.fetchTakenReviews();
+    },
+    (e) => {
+      alert(e.error.message);
+    })
   }
 }

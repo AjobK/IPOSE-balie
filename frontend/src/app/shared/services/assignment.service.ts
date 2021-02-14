@@ -27,14 +27,14 @@ export class AssignmentService {
     return this.http.patch<any>(
       environment.API_URL + `/api/assignments/open/${id}`,
       environment.DEFAULT_HTTP_OPTIONS
-    );
+    )
   }
 
   closeAssignment(id) {
     return this.http.patch<any>(
       environment.API_URL + `/api/assignments/close/${id}`,
       environment.DEFAULT_HTTP_OPTIONS
-    );
+    )
   }
 
   fetchAssignments() {

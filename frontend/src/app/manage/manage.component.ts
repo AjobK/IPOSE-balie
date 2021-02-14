@@ -22,9 +22,13 @@ export class ManageComponent implements OnInit {
   @Output() reviewList: Review[] = [];
   @Output() takenReviewsList: Review[] = [];
   reviewsChangedSubscription: Subscription;
-  @ViewChild('reviewForm') form: NgForm;
   reviewRequestSubscription: Subscription;
+  currentAssignmentSubscription: Subscription;
+  updatedAtSubscription: Subscription;
+  @ViewChild('reviewForm') form: NgForm;
   assignments: Assignment[] = [];
+  currentAssignment: Assignment = null;
+  lastUpdate: Date = new Date();
 
   constructor(
     public reviewService: ReviewService,
@@ -34,23 +38,82 @@ export class ManageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('Initing over');
-    this.reviewService.fetchReviews();
-    this.reviewList = this.reviewService.getReviews();
+    if (this.assignmentService.currentAssignment) {
+      this.reviewList = this.reviewService.getReviews()
+      .filter((i) => {
+        return (
+          i.assignmentId ==
+          (this.assignmentService.currentAssignment
+            ? this.assignmentService.currentAssignment.id
+            : i.assignmentId)
+        )})
+
+      this.takenReviewsList = this.reviewService.getTakenReviews()
+      .filter((i) => {
+        return (
+          i.assignmentId ==
+          (this.assignmentService.currentAssignment
+            ? this.assignmentService.currentAssignment.id
+            : i.assignmentId)
+        )})
+    }
+
+    this.updatedAtSubscription = this.reviewService.updatedAtChanged.subscribe(i => this.lastUpdate = i);
 
     this.reviewsChangedSubscription = this.reviewService.reviewsChanged.subscribe(
-      () => (this.reviewList = this.reviewService.getReviews())
+      (reviews) => {
+        this.reviewList = reviews
+        .filter((i) => {
+          return (
+            i.assignmentId ==
+            (this.assignmentService.currentAssignment
+              ? this.assignmentService.currentAssignment.id
+              : i.assignmentId)
+        )})
+      }
     );
     this.reviewsChangedSubscription = this.reviewService.takenReviewsChanged.subscribe(
-      () => (this.takenReviewsList = this.reviewService.getTakenReviews())
+      (reviews) => {
+        this.takenReviewsList = reviews
+        .filter((i) => {
+          return (
+            i.assignmentId ==
+            (this.assignmentService.currentAssignment
+              ? this.assignmentService.currentAssignment.id
+              : i.assignmentId)
+          )})
+        }
     );
 
     this.elementRef.nativeElement.ownerDocument.body.classList.add('grey-body');
 
     this.assignments = this.assignmentService.assignments;
-    this.assignmentService.assignmentsChanged.subscribe(
-      (assignments: Assignment[]) => {
-        this.assignments = assignments;
+    this.assignmentService.assignmentsChanged.subscribe((assignments) => {
+      this.assignments = assignments;
+    })
+
+    this.currentAssignment = this.assignmentService.currentAssignment;
+    this.currentAssignmentSubscription = this.assignmentService.currentAssignmentChanged.subscribe(
+      (assignment: Assignment) => {
+        this.currentAssignment = assignment;
+
+        this.takenReviewsList = this.reviewService.getTakenReviews()
+        .filter((i) => {
+          return (
+            i.assignmentId ==
+            (this.assignmentService.currentAssignment
+              ? this.assignmentService.currentAssignment.id
+              : i.assignmentId)
+        )})
+
+        this.reviewList = this.reviewService.getReviews()
+        .filter((i) => {
+          return (
+            i.assignmentId ==
+            (this.assignmentService.currentAssignment
+              ? this.assignmentService.currentAssignment.id
+              : i.assignmentId)
+        )})
       }
     );
   }
@@ -59,10 +122,18 @@ export class ManageComponent implements OnInit {
     this.elementRef.nativeElement.ownerDocument.body.classList.remove(
       'grey-body'
     );
+
     if (this.reviewsChangedSubscription)
       this.reviewsChangedSubscription.unsubscribe();
+
     if (this.reviewRequestSubscription)
       this.reviewRequestSubscription.unsubscribe();
+
+    if (this.currentAssignmentSubscription)
+      this.currentAssignmentSubscription.unsubscribe();
+    
+    if (this.updatedAtSubscription)
+      this.updatedAtSubscription.unsubscribe();
   }
 
   onSubmit(form: NgForm) {
@@ -75,8 +146,9 @@ export class ManageComponent implements OnInit {
         () => {
           this.reviewService.fetchReviews();
         },
-        () => {
+        (e) => {
           this.reviewService.fetchReviews();
+          alert(e.error.message);
         }
       );
   }
@@ -91,14 +163,22 @@ export class ManageComponent implements OnInit {
       this.assignmentService
         .closeAssignment(currentAssignment.id)
         .subscribe(() => {
-          this.assignmentService.fetchAssignments();
-        });
+            this.assignmentService.fetchAssignments();
+          },
+          (e) => {
+            alert(e.error.message);
+          }
+        );
     } else {
       this.assignmentService
         .openAssignment(currentAssignment.id)
         .subscribe(() => {
           this.assignmentService.fetchAssignments();
-        });
+        },
+        (e) => {
+          alert(e.error.message);
+        }
+      );
     }
   }
 }

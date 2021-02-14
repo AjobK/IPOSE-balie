@@ -134,3 +134,45 @@ article.order-item {
 .reviewSeperator {
     margin-bottom: 40px;
 }
+
+.updated-time {
+    cursor: default;
+    transition: 0.2s;
+    align-self: flex-start;
+    color: rgba(0,0,0,0.5);
+
+    &:hover {
+        color: black;
+    }
+}
+
+.top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+
+    > button {
+        transition: 0.2s;
+        border-radius: 3px;
+        padding: 10px 15px;
+        margin-left: 10px;
+        background-color: darken(rgb(226, 62, 62), 25%);
+        border: none;
+        color: white;
+        font-size: 12pt;
+        cursor: pointer;
+
+        &:hover {
+            background-color: darken(rgb(226, 62, 62), 35%);
+        }
+
+        &.open {
+            background-color: darken(rgb(104, 211, 104), 25%) !important;
+            
+            &:hover {
+                background-color: darken(rgb(104, 211, 104), 35%) !important;
+            }
+        }
+    }
+}
