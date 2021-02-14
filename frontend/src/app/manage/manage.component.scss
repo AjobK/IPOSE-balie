@@ -147,6 +147,7 @@ article.order-item {
 }
 
 .top-bar {
+    max-width: $desktop-large;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -175,4 +176,9 @@ article.order-item {
             }
         }
     }
+}
+
+option span {
+    margin-left: 100px;
+    color: $secondary-tone;
 }

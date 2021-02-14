@@ -15,6 +15,9 @@ router.get("/", reviewController.getOpenReviews);
 // GET /review/taken
 router.get("/taken", isAuth, reviewController.getTakenReviews);
 
+// PATCH /review/close/:id
+router.patch("/close/:reviewId", isAuth, reviewController.closeReview);
+
 // PATCH /review/:id
 router.patch("/:reviewId", isAuth, reviewController.setReviewer);
 

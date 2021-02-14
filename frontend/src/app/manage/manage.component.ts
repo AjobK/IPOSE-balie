@@ -148,7 +148,7 @@ export class ManageComponent implements OnInit {
         },
         (e) => {
           this.reviewService.fetchReviews();
-          alert(e.error.message);
+          alert(e.error.message || 'Oops, something went wrong...');
         }
       );
   }
@@ -166,7 +166,7 @@ export class ManageComponent implements OnInit {
             this.assignmentService.fetchAssignments();
           },
           (e) => {
-            alert(e.error.message);
+            alert(e.error.message || 'Oops, something went wrong...');
           }
         );
     } else {
@@ -176,7 +176,7 @@ export class ManageComponent implements OnInit {
           this.assignmentService.fetchAssignments();
         },
         (e) => {
-          alert(e.error.message);
+          alert(e.error.message || 'Oops, something went wrong...');
         }
       );
     }

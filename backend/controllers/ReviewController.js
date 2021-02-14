@@ -81,7 +81,7 @@ exports.createReview = (req, res, next) => {
     })
     .catch((e) => {
       res.status(422).json({
-        message: "Could not create review request...",
+        message: e.message || "Could not create review request...",
       });
     });
 };
@@ -105,23 +105,6 @@ exports.updateReplicaById = (req, res, next) => {
     });
 };
 
-exports.deleteReplicaById = (req, res, next) => {
-  if (!req.params.id || !isNumeric(req.params.id))
-    res.status(500).json({ message: "Invalid replica ID" });
-
-  ReviewDAO.deleteReplicaById(req.params.id)
-    .then(() => {
-      res.status(200).json({
-        message: "Deleted replica successfully.",
-      });
-    })
-    .catch(() => {
-      res.status(422).json({
-        message: "Could not delete replica",
-      });
-    });
-};
-
 exports.getReviewById = (req, res, next) => {
   const id = req.params.reviewId;
   ReviewDAO.getReviewById(id)
@@ -130,12 +113,34 @@ exports.getReviewById = (req, res, next) => {
         message: "Review loaded",
       });
     })
-    .catch(() => {
+    .catch((e) => {
       return res.status(404).json({
-        message: "Review not found",
+        message: e.message || "Review not found",
       });
     });
 };
+
+exports.closeReview = async (req, res, next) => {
+  if (!req.decoded)
+  return res.status(401).json({
+    message: "No authorization data",
+  });
+
+  const reviewId = req.params.reviewId * 1;
+  const reviewerId = req.decoded.id;
+
+  return ReviewDAO.close(reviewId, reviewerId)
+  .then(() => {
+    return res.status(200).json({
+      message: "Review closed",
+    });
+  })
+  .catch(() => {
+    return res.status(422).json({
+      message: "Could not close review",
+    });
+  })
+}
 
 exports.setReviewer = async (req, res, next) => {
   if (!req.decoded)
@@ -178,9 +183,9 @@ exports.setReviewer = async (req, res, next) => {
         message: "Reviewer set",
       });
     })
-    .catch(() => {
+    .catch((e) => {
       return res.status(422).json({
-        message: "Could not set reviewer",
+        message: e.message || "Could not set reviewer",
       });
     });
 };

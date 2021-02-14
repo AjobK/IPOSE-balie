@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
                 this.accountService.accountChanged.next(this.accountService.account);
 
                 this.reviewService.fetchReviews();
+                if (this.accountService.account.id != -1) this.reviewService.fetchTakenReviews();
 
                 this.router.navigate(['/']);
             },

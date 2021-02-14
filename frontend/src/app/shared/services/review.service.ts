@@ -143,7 +143,7 @@ export class ReviewService {
         }
       },
       (e) => {
-        alert(e.error.message);
+        alert(e.error.message || 'Oops, something went wrong...');
       });
   }
 
@@ -158,7 +158,7 @@ export class ReviewService {
         this.fetchTakenReviews();
       },
       (e) => {
-        alert(e.error.message);
+        alert(e.error.message || 'Oops, something went wrong...');
       }
     )
   }
@@ -173,7 +173,7 @@ export class ReviewService {
       this.fetchTakenReviews();
     },
     (e) => {
-      alert(e.error.message);
+      alert(e.error.message || 'Oops, something went wrong...');
     })
   }
 }

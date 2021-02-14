@@ -7,7 +7,7 @@ module.exports = class ReviewDAO {
             FROM review r
             LEFT JOIN student s ON r.student_id = s.id
             LEFT JOIN assignment a ON r.assignment_id = a.id
-            WHERE reviewer_id IS NULL AND request_time >= CURRENT_DATE ORDER BY request_time;
+            WHERE reviewer_id IS NULL AND request_time >= CURRENT_DATE AND r.open = true ORDER BY request_time;
         `);
   }
 
@@ -31,7 +31,7 @@ module.exports = class ReviewDAO {
       FROM review r
       LEFT JOIN student s ON r.student_id = s.id
       LEFT JOIN assignment a ON r.assignment_id = a.id
-      WHERE reviewer_id = $1 AND r.open = true AND request_time >= CURRENT_DATE ORDER BY request_time;`,
+      WHERE r.reviewer_id = $1 AND r.open = true AND request_time >= CURRENT_DATE ORDER BY request_time;`,
       [id]
     );
   }
@@ -90,6 +90,13 @@ module.exports = class ReviewDAO {
 
   static setReviewer(reviewId, reviewerId) {
     return db.query("UPDATE review SET reviewer_id = $1 WHERE id = $2;", [
+      reviewerId,
+      reviewId,
+    ]);
+  }
+
+  static close(reviewId, reviewerId) {
+    return db.query("UPDATE review SET open = false WHERE reviewer_id = $1 AND id = $2;", [
       reviewerId,
       reviewId,
     ]);
