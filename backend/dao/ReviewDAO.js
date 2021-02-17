@@ -22,7 +22,7 @@ module.exports = class ReviewDAO {
   }
 
   static getReviewById(id) {
-    return db.query("SELECT * FROM review LEFT JOIN reviewer ON reviewer.id = review.reviewer_id WHERE id = $1;", [id]);
+    return db.query("SELECT * FROM review LEFT JOIN reviewer ON reviewer.id = review.reviewer_id WHERE review.id = $1;", [id]);
   }
 
   static getTakenReviews(id) {
