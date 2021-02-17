@@ -21,7 +21,7 @@ export class ReviewService {
   ) {
     this.reviewsChanged.next(this.reviews);
     this.fetchReviews();
-    
+
     this.takenReviewsChanged.next(this.takenReviews);
   }
 
@@ -45,37 +45,37 @@ export class ReviewService {
         });
 
         this.updatedAt = new Date();
-        this.updatedAtChanged.next(this.updatedAt)
+        this.updatedAtChanged.next(this.updatedAt);
 
         this.reviewsChanged.next(this.reviews);
       });
   }
 
   fetchTakenReviews() {
-    return this.http.get<any>(
-      environment.API_URL + `/api/review/taken`,
-      environment.DEFAULT_HTTP_OPTIONS
-    )
-    .subscribe((res: HttpResponse<any>) => {
-      this.takenReviews = [];
-      res.body.reviews.map((review) => {
-        this.takenReviews.push(
-          new Review(
-            review.id,
-            review.student_number,
-            review.request_time,
-            review.assignment_id
-          )
-        );
+    return this.http
+      .get<any>(
+        environment.API_URL + `/api/review/taken`,
+        environment.DEFAULT_HTTP_OPTIONS
+      )
+      .subscribe((res: HttpResponse<any>) => {
+        this.takenReviews = [];
+        res.body.reviews.map((review) => {
+          this.takenReviews.push(
+            new Review(
+              review.id,
+              review.student_number,
+              review.request_time,
+              review.assignment_id
+            )
+          );
+        });
+
+        this.updatedAt = new Date();
+        this.updatedAtChanged.next(this.updatedAt);
+
+        this.takenReviewsChanged.next(this.takenReviews);
       });
-
-      this.updatedAt = new Date();
-      this.updatedAtChanged.next(this.updatedAt)
-
-      this.takenReviewsChanged.next(this.takenReviews);
-    });
   }
-
 
   setReviews(reviews: Review[]) {
     this.reviews = reviews;
@@ -133,47 +133,55 @@ export class ReviewService {
         environment.DEFAULT_HTTP_OPTIONS
       )
       .pipe(first())
-      .subscribe((res: HttpResponse<any>) => {
-        for (let i = 0; i < this.reviews.length; i++) {
-          if (this.reviews[i].id == review.id) {
-            this.reviews.splice(i, 1);
-            this.reviewsChanged.next(this.reviews);
-            break;
+      .subscribe(
+        (res: HttpResponse<any>) => {
+          for (let i = 0; i < this.reviews.length; i++) {
+            if (this.reviews[i].id == review.id) {
+              this.reviews.splice(i, 1);
+              this.reviewsChanged.next(this.reviews);
+              break;
+            }
           }
+        },
+        (e) => {
+          alert(e.error.message || 'Oops, something went wrong...');
         }
-      },
-      (e) => {
-        alert(e.error.message || 'Oops, something went wrong...');
-      });
+      );
   }
 
   setAssigned(index: number) {
-    return this.http.patch<any>(
-      environment.API_URL + `/api/review/${index}`,
-      {},
-      environment.DEFAULT_HTTP_OPTIONS
-    ).subscribe(
-      () => {
-        this.fetchReviews();
-        this.fetchTakenReviews();
-      },
-      (e) => {
-        alert(e.error.message || 'Oops, something went wrong...');
-      }
-    )
+    return this.http
+      .patch<any>(
+        environment.API_URL + `/api/review/${index}`,
+        {},
+        environment.DEFAULT_HTTP_OPTIONS
+      )
+      .subscribe(
+        () => {
+          this.fetchReviews();
+          this.fetchTakenReviews();
+        },
+        (e) => {
+          alert(e.error.message || 'Oops, something went wrong...');
+        }
+      );
   }
 
   closeReview(index: number) {
-    return this.http.patch<any>(
-      environment.API_URL + `/api/review/close/${index}`,
-      {},
-      environment.DEFAULT_HTTP_OPTIONS
-    ).subscribe(() => {
-      this.fetchReviews();
-      this.fetchTakenReviews();
-    },
-    (e) => {
-      alert(e.error.message || 'Oops, something went wrong...');
-    })
+    return this.http
+      .patch<any>(
+        environment.API_URL + `/api/review/close/${index}`,
+        {},
+        environment.DEFAULT_HTTP_OPTIONS
+      )
+      .subscribe(
+        () => {
+          this.fetchReviews();
+          this.fetchTakenReviews();
+        },
+        (e) => {
+          alert(e.error.message || 'Oops, something went wrong...');
+        }
+      );
   }
 }

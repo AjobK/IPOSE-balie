@@ -13,6 +13,8 @@ import { AccountService } from '../shared/services/account.service';
 import { AssignmentService } from '../shared/services/assignment.service';
 import { ReviewService } from '../shared/services/review.service';
 
+const studentData = require('../../utilities/student-data.js');
+
 @Component({
   selector: 'app-manage',
   templateUrl: './manage.component.html',
@@ -39,50 +41,54 @@ export class ManageComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.assignmentService.currentAssignment) {
-      this.reviewList = this.reviewService.getReviews()
-      .filter((i) => {
+      this.reviewList = this.reviewService.getReviews().filter((i) => {
         return (
           i.assignmentId ==
           (this.assignmentService.currentAssignment
             ? this.assignmentService.currentAssignment.id
             : i.assignmentId)
-        )})
+        );
+      });
 
-      this.takenReviewsList = this.reviewService.getTakenReviews()
-      .filter((i) => {
-        return (
-          i.assignmentId ==
-          (this.assignmentService.currentAssignment
-            ? this.assignmentService.currentAssignment.id
-            : i.assignmentId)
-        )})
-    }
-
-    this.updatedAtSubscription = this.reviewService.updatedAtChanged.subscribe(i => this.lastUpdate = i);
-
-    this.reviewsChangedSubscription = this.reviewService.reviewsChanged.subscribe(
-      (reviews) => {
-        this.reviewList = reviews
+      this.takenReviewsList = this.reviewService
+        .getTakenReviews()
         .filter((i) => {
           return (
             i.assignmentId ==
             (this.assignmentService.currentAssignment
               ? this.assignmentService.currentAssignment.id
               : i.assignmentId)
-        )})
+          );
+        });
+    }
+
+    this.updatedAtSubscription = this.reviewService.updatedAtChanged.subscribe(
+      (i) => (this.lastUpdate = i)
+    );
+
+    this.reviewsChangedSubscription = this.reviewService.reviewsChanged.subscribe(
+      (reviews) => {
+        this.reviewList = reviews.filter((i) => {
+          return (
+            i.assignmentId ==
+            (this.assignmentService.currentAssignment
+              ? this.assignmentService.currentAssignment.id
+              : i.assignmentId)
+          );
+        });
       }
     );
     this.reviewsChangedSubscription = this.reviewService.takenReviewsChanged.subscribe(
       (reviews) => {
-        this.takenReviewsList = reviews
-        .filter((i) => {
+        this.takenReviewsList = reviews.filter((i) => {
           return (
             i.assignmentId ==
             (this.assignmentService.currentAssignment
               ? this.assignmentService.currentAssignment.id
               : i.assignmentId)
-          )})
-        }
+          );
+        });
+      }
     );
 
     this.elementRef.nativeElement.ownerDocument.body.classList.add('grey-body');
@@ -90,30 +96,32 @@ export class ManageComponent implements OnInit {
     this.assignments = this.assignmentService.assignments;
     this.assignmentService.assignmentsChanged.subscribe((assignments) => {
       this.assignments = assignments;
-    })
+    });
 
     this.currentAssignment = this.assignmentService.currentAssignment;
     this.currentAssignmentSubscription = this.assignmentService.currentAssignmentChanged.subscribe(
       (assignment: Assignment) => {
         this.currentAssignment = assignment;
 
-        this.takenReviewsList = this.reviewService.getTakenReviews()
-        .filter((i) => {
-          return (
-            i.assignmentId ==
-            (this.assignmentService.currentAssignment
-              ? this.assignmentService.currentAssignment.id
-              : i.assignmentId)
-        )})
+        this.takenReviewsList = this.reviewService
+          .getTakenReviews()
+          .filter((i) => {
+            return (
+              i.assignmentId ==
+              (this.assignmentService.currentAssignment
+                ? this.assignmentService.currentAssignment.id
+                : i.assignmentId)
+            );
+          });
 
-        this.reviewList = this.reviewService.getReviews()
-        .filter((i) => {
+        this.reviewList = this.reviewService.getReviews().filter((i) => {
           return (
             i.assignmentId ==
             (this.assignmentService.currentAssignment
               ? this.assignmentService.currentAssignment.id
               : i.assignmentId)
-        )})
+          );
+        });
       }
     );
   }
@@ -131,12 +139,20 @@ export class ManageComponent implements OnInit {
 
     if (this.currentAssignmentSubscription)
       this.currentAssignmentSubscription.unsubscribe();
-    
-    if (this.updatedAtSubscription)
-      this.updatedAtSubscription.unsubscribe();
+
+    if (this.updatedAtSubscription) this.updatedAtSubscription.unsubscribe();
   }
 
   onSubmit(form: NgForm) {
+    if (
+      form.value.studentNumber &&
+      studentData.indexOf(form.value.studentNumber) == -1
+    ) {
+      alert('Invalid student number');
+      form.reset();
+      return;
+    }
+
     this.reviewRequestSubscription = this.reviewService
       .createReview({
         studentNumber: form.value.studentNumber,
@@ -151,6 +167,8 @@ export class ManageComponent implements OnInit {
           alert(e.error.message || 'Oops, something went wrong...');
         }
       );
+
+    form.reset();
   }
 
   setAssignment(assignment: Assignment): void {
@@ -160,19 +178,17 @@ export class ManageComponent implements OnInit {
   toggleAssignmentOpen() {
     const currentAssignment = this.assignmentService.currentAssignment;
     if (currentAssignment.open) {
-      this.assignmentService
-        .closeAssignment(currentAssignment.id)
-        .subscribe(() => {
-            this.assignmentService.fetchAssignments();
-          },
-          (e) => {
-            alert(e.error.message || 'Oops, something went wrong...');
-          }
-        );
+      this.assignmentService.closeAssignment(currentAssignment.id).subscribe(
+        () => {
+          this.assignmentService.fetchAssignments();
+        },
+        (e) => {
+          alert(e.error.message || 'Oops, something went wrong...');
+        }
+      );
     } else {
-      this.assignmentService
-        .openAssignment(currentAssignment.id)
-        .subscribe(() => {
+      this.assignmentService.openAssignment(currentAssignment.id).subscribe(
+        () => {
           this.assignmentService.fetchAssignments();
         },
         (e) => {
