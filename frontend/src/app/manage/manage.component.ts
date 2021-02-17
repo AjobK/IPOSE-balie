@@ -164,11 +164,7 @@ export class ManageComponent implements OnInit {
         },
         (e) => {
           this.reviewService.fetchReviews();
-          alert(
-              (e.error.ninja ? `\n🐱‍👤 HAYAAA! Geninja\'d... \n\n\n Het overkomt ons allemaal \n\n\n❤️ Groetjes van ${e.error.ninja}` : false) ||
-              e.error.message ||
-              'Oops, something went wrong...'
-          );
+          alert(e.error.message || 'Oops, something went wrong...');
         }
       );
 
