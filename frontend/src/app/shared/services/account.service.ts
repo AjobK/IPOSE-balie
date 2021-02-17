@@ -62,7 +62,9 @@ export class AccountService {
             this.account = new Account(-1, '');
             this.accountChanged.next(this.account);
             this.reviewService.fetchReviews();
-            this.reviewService.takenReviewsChanged.next([]);
+            this.reviewService.takenReviews = [];
+            this.reviewService.takenReviewsChanged.next(this.reviewService.takenReviews);
+            this.reviewService.fetchReviews();
             this.router.navigate(['login']);
         })
     }

@@ -10,7 +10,7 @@ import { AssignmentService } from './assignment.service';
 export class ReviewService {
   private reviews: Review[] = [];
   reviewsChanged = new Subject<Review[]>();
-  private takenReviews: Review[] = [];
+  public takenReviews: Review[] = [];
   public updatedAt: Date = new Date();
   public updatedAtChanged: Subject<Date> = new Subject<Date>();
   takenReviewsChanged = new Subject<Review[]>();
@@ -163,6 +163,7 @@ export class ReviewService {
         },
         (e) => {
           alert(e.error.message || 'Oops, something went wrong...');
+          this.fetchReviews();
         }
       );
   }
