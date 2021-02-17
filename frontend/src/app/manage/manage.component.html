@@ -5,10 +5,10 @@
       <p class="updated-time">Last update at {{ lastUpdate | date:'HH:mm:ss' }}</p>
       <button
         *ngIf="this.accountService.account.id >= 1"
-        [ngClass]="{ open: !currentAssignment.open }"
+        [ngClass]="{ open: currentAssignment && !currentAssignment.open }"
         (click)="toggleAssignmentOpen()"
       >
-        {{ currentAssignment.open ? "Close" : "Open" }}
+        {{ currentAssignment && currentAssignment.open ? "Close" : "Open" }}
         assignment
       </button>
     </div>

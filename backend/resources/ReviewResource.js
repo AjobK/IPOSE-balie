@@ -9,7 +9,7 @@ router.post("/", reviewController.createReview);
 
 router.get("/", reviewController.getOpenReviews);
 
-router.patch('/close/:id', isAuth, reviewController.closeReview)
+router.patch('/close/:reviewId', isAuth, reviewController.closeReview)
 
 // GET /review/taken
 router.get("/taken", isAuth, reviewController.getTakenReviews);
