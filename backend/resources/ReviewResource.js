@@ -9,8 +9,7 @@ router.post("/", reviewController.createReview);
 
 router.get("/", reviewController.getOpenReviews);
 
-// TODO Closing
-// router.get('/close/:id', isAuth, reviewController)
+router.get("/close/:id", isAuth, reviewController);
 
 // GET /review/taken
 router.get("/taken", isAuth, reviewController.getTakenReviews);
