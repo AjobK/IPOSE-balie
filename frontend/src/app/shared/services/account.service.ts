@@ -61,6 +61,8 @@ export class AccountService {
         ).subscribe(() => {
             this.account = new Account(-1, '');
             this.accountChanged.next(this.account);
+            this.reviewService.fetchReviews();
+            this.reviewService.takenReviewsChanged.next([]);
             this.router.navigate(['login']);
         })
     }
