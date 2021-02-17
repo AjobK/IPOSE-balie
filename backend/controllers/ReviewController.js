@@ -159,7 +159,7 @@ exports.setReviewer = async (req, res, next) => {
     })
     .catch(() => {});
 
-  console.log(review.username)
+  console.log(review)
 
   if (review.reviewer_id != null)
     return res.status(409).json({
