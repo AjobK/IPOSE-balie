@@ -13,7 +13,7 @@ import { AccountService } from '../shared/services/account.service';
 import { AssignmentService } from '../shared/services/assignment.service';
 import { ReviewService } from '../shared/services/review.service';
 
-const studentData = require('../../utilities/student-data.js');
+import studentData from '../../utilities/student-data.js';
 
 @Component({
   selector: 'app-manage',
