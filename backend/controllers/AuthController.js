@@ -7,7 +7,7 @@ const isStrongPassword = require('validator/lib/isStrongPassword');
 
 require('dotenv').config()
 
-const { JWT_SECRET, SECURE } = process.env;
+const { JWT_SECRET, SECURE, REGISTER_KEY } = process.env;
 
 exports.getLoggedIn = (req, res, next) => {
     let loggedIn = true;
@@ -90,7 +90,7 @@ exports.logout = (req, res, next) => {
 exports.register = async (req, res, next) => {
     const { body } = req;
 
-    if (!body.key || body.key != '7pd4xKiHZskhGzFz0abd')
+    if (!REGISTER_KEY || !body.key || body.key != REGISTER_KEY)
         return res.status(422).json({ message: 'Not allowed to register'});
 
     if (body.username) body.username = escape(body.username).trim();
