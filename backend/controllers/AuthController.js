@@ -68,7 +68,7 @@ exports.login = (req, res, next) => {
         ); //Generate token for client with an expire time of 1 hour.
 
         // Setting path to '/' so HTTP Cookie is retrievable across website
-        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; ${ SECURE == 'true' ? 'Secure;' : '' } expires=${+new Date(new Date().getTime()+86409000).toUTCString()}; path=/`);
+        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; ${ SECURE == 'true' ? 'Secure;' : '' } expires=${+new Date(new Date().getTime()+(86409000 * 2.5)).toUTCString()}; path=/`);
         res.status(200).json({
             message: 'Logged in succesfully',
             id: loadedUser.id,
@@ -117,7 +117,7 @@ exports.register = async (req, res, next) => {
         ); //Generate token for client with an expire time of 1 hour.
 
         // Setting path to '/' so HTTP Cookie is retrievable across website
-        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; ${ SECURE == 'true' ? 'Secure;' : '' } expires=${+new Date(new Date().getTime()+86409000).toUTCString()}; path=/`);
+        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; ${ SECURE == 'true' ? 'Secure;' : '' } expires=${+new Date(new Date().getTime()+(86409000 * 2.5)).toUTCString()}; path=/`);
         res.status(200).json({
             message: 'Created reviewer successfully.',
             username: body.username,

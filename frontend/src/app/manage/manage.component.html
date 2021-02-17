@@ -1,5 +1,5 @@
 <app-navigation></app-navigation>
-<section>
+<section class="wrapper">
   <section>
     <div class="top-bar">
       <p class="updated-time">Last update at {{ lastUpdate | date:'HH:mm:ss' }}</p>
@@ -40,4 +40,10 @@
     <app-checkout-item *ngFor="let takenReviewItem of takenReviewsList; let i = index" [review]="takenReviewItem" [index]="i+1" [taken]="true"></app-checkout-item>
     <div class="reviewSeperator"></div>
     <app-checkout-item *ngFor="let reviewItem of reviewList; let i = index" [review]="reviewItem" [index]="i+1" [ngClass]="{ unfocused: takenReviewsList && takenReviewsList.length > 0 }"></app-checkout-item>
+  </section>
+  <footer>
+    Made with <span class="heart">❤️</span> by
+    <a href="https://nl.linkedin.com/in/ajob-kustra" target="_blank">Ajob</a> &
+    <a href="https://www.linkedin.com/in/mitchell-van-rijswijk-baaa851b8/?originalSubdomain=nl" target="_blank">Mitchell</a>
+  </footer>
 </section>
