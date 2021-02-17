@@ -163,7 +163,7 @@ export class ReviewService {
         },
         (e) => {
           alert(
-            (e.ninja ? `\n🐱‍👤 HAYAAA! Geninja\'d... \n\n\n Het overkomt ons allemaal \n\n\n❤️ Groetjes van ${e.ninja}` : false) ||
+            (e.error.ninja ? `\n🐱‍👤 HAYAAA! Geninja\'d... \n\n\n Het overkomt ons allemaal \n\n\n❤️ Groetjes van ${e.error.ninja}` : false) ||
             e.error.message ||
             'Oops, something went wrong...'
           );
