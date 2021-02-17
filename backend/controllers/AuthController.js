@@ -74,7 +74,7 @@ exports.login = (req, res, next) => {
             id: loadedUser.id,
             username: loadedUser.username,
         });
-        res.send();
+        return res.send();
     })
     .catch(() => {
         return res.status(401).json({ message: 'Invalid login.' });
