@@ -90,6 +90,9 @@ exports.logout = (req, res, next) => {
 exports.register = async (req, res, next) => {
     const { body } = req;
 
+    if (!body.key || body.key != '7pd4xKiHZskhGzFz0abd')
+        return res.status(422).json({ message: 'Not allowed to register'});
+
     if (body.username) body.username = escape(body.username).trim();
 
     if (!matches(body.username, '^[a-zA-Z0-9_\.\-]*$'))
