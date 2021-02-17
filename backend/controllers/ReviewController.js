@@ -151,17 +151,19 @@ exports.setReviewer = async (req, res, next) => {
   const reviewId = req.params.reviewId * 1;
   const reviewerId = req.decoded.id;
 
-  let hasReviewer = true;
+  let review = {}
 
   await ReviewDAO.getReviewById(reviewId)
     .then((data) => {
-      if (data.rows[0].reviewer_id == null) hasReviewer = false;
+      review = data.rows[0];
     })
     .catch(() => {});
 
-  if (hasReviewer)
+  console.log(review.username)
+
+  if (review.reviewer_id != null)
     return res.status(409).json({
-      ninja: req.decoded.username,
+      ninja: review.username,
     });
 
   if (!reviewerId || !reviewId)
