@@ -26,6 +26,7 @@ export class AssignmentService {
   openAssignment(id) {
     return this.http.patch<any>(
       environment.API_URL + `/api/assignments/open/${id}`,
+      {},
       environment.DEFAULT_HTTP_OPTIONS
     )
   }
@@ -33,6 +34,7 @@ export class AssignmentService {
   closeAssignment(id) {
     return this.http.patch<any>(
       environment.API_URL + `/api/assignments/close/${id}`,
+      {},
       environment.DEFAULT_HTTP_OPTIONS
     )
   }
