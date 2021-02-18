@@ -34,7 +34,7 @@ export class CheckoutItemComponent implements OnInit {
             this.reviewRequestSubscription.unsubscribe();
     }
 
-    sanitize(studentNumber: string){
-        return this.sanitizer.bypassSecurityTrustUrl('callto:' + studentNumber + '@student.hsleiden.nl');
+    sanitize(text: string){
+        return this.sanitizer.bypassSecurityTrustUrl(text);
     }
 }
