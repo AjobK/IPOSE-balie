@@ -34,7 +34,7 @@ article.order-item {
         background-color: $background-color;
         padding: 3px;
         border-radius: 100%;
-        color: darken($secondary-tone, 25);
+        color: darken($secondary-tone, 10%);
         font-weight: bold;
 
         &-border {
@@ -72,7 +72,7 @@ article.order-item {
 
             > span {
                 margin-right: 5px;
-                background-color: darken($secondary-tone, 20%);
+                background-color: darken($secondary-tone, 10%);
                 border-radius: 3px;
                 color: white;
                 padding: 0 6pt;

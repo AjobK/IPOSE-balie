@@ -45,7 +45,7 @@ module.exports = class ReviewDAO {
       ])
       .then((assignment) => {
         if (assignment.rows.length <= 0)
-          throw new Error("This assignment is not open");
+          throw new Error("This help counter is not open");
       });
 
     let studentId = -1;
@@ -54,7 +54,7 @@ module.exports = class ReviewDAO {
       .query("SELECT * FROM student WHERE st_number=$1;", [studentNumber])
       .then((student) => {
         if (student.rows.length <= 0)
-          throw new Error("This student is not allowed to open a review");
+          throw new Error("This student is not allowed to request help");
         else studentId = student.rows[0].id;
       });
 
@@ -73,7 +73,7 @@ module.exports = class ReviewDAO {
       .then(async (students) => {
         for (let i = 0; i < students.rows.length; i++) {
           if (students.rows[i].reviewer_id == null)
-            throw new Error("This student has already opened a review");
+            throw new Error("This student has already requested help");
         }
 
         return await db.query(

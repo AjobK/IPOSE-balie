@@ -41,7 +41,8 @@ section {
             justify-content: center;
             padding: 5%;
             border-radius: 3px;
-            background-color: rgba(darken($secondary-tone, 25%), 0.8);
+            background-color: #111;
+            filter: invert(1);
 
             > img {
                 width: 40%;

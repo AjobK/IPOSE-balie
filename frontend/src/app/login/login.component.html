@@ -2,7 +2,7 @@
 <section>
     <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading" [ngClass]="{ error: hasErrors }">
         <div class="logo">
-            <img src="../../assets/icons/logo-white.svg" />
+            <app-logo></app-logo>
         </div>
         <div>
             <label for="username">Username</label>

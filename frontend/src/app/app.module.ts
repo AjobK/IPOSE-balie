@@ -15,6 +15,7 @@ import { PopUpComponent } from './pop-up/pop-up.component';
 import { AccountService } from './shared/services/account.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { LogoComponent } from './logo/logo.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CheckoutItemComponent,
     LoginComponent,
     ManageComponent,
-    PopUpComponent
+    PopUpComponent,
+    LogoComponent
   ],
   imports: [
     BrowserModule,

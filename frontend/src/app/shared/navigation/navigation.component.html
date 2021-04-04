@@ -2,9 +2,7 @@
     <div class="mobile-header-offset"></div>
     <div class="mobile-header-wrapper">
         <div>
-            <a [routerLink]="['/']">
-                <img class="logo" src="../../../assets/icons/logo-black.svg" />
-            </a>
+            <app-logo></app-logo>
             <app-hamburger
                 (click)="toggleMenu()"
             ></app-hamburger>
@@ -29,9 +27,7 @@
 </header>
 <header class="desktop-header">
     <div>
-        <a [routerLink]="['/']">
-            <img class="logo" src="../../../assets/icons/logo-black.svg" />
-        </a>
+        <app-logo></app-logo>
     </div>
     <nav>
         <a
